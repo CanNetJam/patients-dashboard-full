@@ -1,6 +1,5 @@
 import { vitals } from "../data/vital.store";
 import { Vital } from "../models/vital.model";
-import { checkLastId } from "../utils/last-id-checker";
 
 export const VitalService = {
     getAll(): Vital[] {
@@ -18,7 +17,7 @@ export const VitalService = {
         temperature: number,
         notes: string
     ): Vital {
-        let lastId = checkLastId(vitals);
+        let lastId = vitals.length > 0 ? vitals[vitals.length - 1].id : 0;
 
         const user: Vital = {
             id: lastId + 1,

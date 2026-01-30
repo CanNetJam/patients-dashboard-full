@@ -1,6 +1,5 @@
 import { users } from "../data/user.store";
 import { User } from "../models/user.model";
-import { checkLastId } from "../utils/last-id-checker";
 
 export const UserService = {
     getAll(): User[] {
@@ -17,8 +16,8 @@ export const UserService = {
         age: number,
         sex: 'male' | 'female'
     ): User {
-        let lastId = checkLastId(users);
-        
+        let lastId = users.length > 0 ? users[users.length - 1].id : 0;
+
         const user: User = {
             id: lastId + 1,
             firstName,
