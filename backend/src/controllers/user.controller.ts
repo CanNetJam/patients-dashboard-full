@@ -24,17 +24,17 @@ export const UserController = {
     },
 
     createUser(req: Request, res: Response, next: NextFunction) {
-        const { firstName, lastName, age, sex } = req.body;
+        const { name, dateOfBirth, age, sex } = req.body;
 
-        if (!firstName || !lastName || !age) {
-            return next(new HttpError(400, "Name and age are required"));
+        if (!name || !dateOfBirth || !age || !age) {
+            return next(new HttpError(400, "Plase fill out the neccessary fieldsre"));
         }
 
         if (age < 0) {
             return next(new HttpError(400, "Age should be a positive number"));
         }
 
-        const user = UserService.create(firstName, lastName, age, sex);
+        const user = UserService.create(name, dateOfBirth, age, sex);
         res.status(201).json(success(user));
     }
 };

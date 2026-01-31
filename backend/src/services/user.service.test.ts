@@ -8,30 +8,31 @@ describe("UserService", () => {
         users.length = 0;
 
         users.push(
-            { id: 1, firstName: "John", lastName: "Doe", age: 30, sex: "male" },
-            { id: 2, firstName: "Jane", lastName: "Smith", age: 25, sex: "female" }
+            { id: 1, name: "John", dateOfBirth: new Date(), age: 30, sex: "male", createdAt: new Date() },
+            { id: 2, name: "Jane", dateOfBirth: new Date(), age: 25, sex: "female", createdAt: new Date() }
         );
     });
 
     it("should create a new user", () => {
         const newUser: Omit<User, "id"> = {
-            firstName: "Alice",
-            lastName: "Johnson",
+            name: "Alice",
+            dateOfBirth: new Date(),
             age: 28,
-            sex: "female"
+            sex: "female",
+            createdAt: new Date()
         };
 
         const createdUser = UserService.create(
-            newUser.firstName,
-            newUser.lastName,
+            newUser.name,
+            newUser.dateOfBirth,
             newUser.age,
             newUser.sex
         );
 
         expect(createdUser).toBeDefined();
-        expect(createdUser.id).toBe(3); 
-        expect(createdUser.firstName).toBe(newUser.firstName);
-        expect(createdUser.lastName).toBe(newUser.lastName);
+        expect(createdUser.id).toBe(3);
+        expect(createdUser.name).toBe(newUser.name);
+        expect(createdUser.dateOfBirth).toBe(newUser.dateOfBirth);
         expect(createdUser.age).toBe(newUser.age);
         expect(createdUser.sex).toBe(newUser.sex);
 
@@ -41,8 +42,8 @@ describe("UserService", () => {
     });
 
     it("should increment the user ID for each new user", () => {
-        const user1 = UserService.create("Alice", "Johnson", 28, "female");
-        const user2 = UserService.create("Bob", "Brown", 35, "male");
+        const user1 = UserService.create("Alice Johnson", new Date(), 28, "female");
+        const user2 = UserService.create("Bob Brown", new Date(), 35, "male");
 
         expect(user1.id).toBe(3); // First new user
         expect(user2.id).toBe(4); // Second new user

@@ -6,26 +6,28 @@ export const VitalService = {
         return vitals;
     },
 
-    getById(id: number): Vital | undefined {
-        return vitals.find(u => u.userId === id);
+    getById(id: number): Vital[] {
+        return vitals.filter(u => u.userId === id);
     },
 
     create(
         userId: number,
-        heartRate: number,
-        bloodPressure: number,
-        temperature: number,
-        notes: string
+        type: "Heart Rate" | "Respiratory Rate" | "BloodPressure - Diastolic" | "BloodPressure - Systolic" | "Temperature" | "Height" | "Weight" | "Note",
+        value: number,
+        unit: string,
+        riskScore: string,
+        details: string,
     ): Vital {
         let lastId = vitals.length > 0 ? vitals[vitals.length - 1].id : 0;
 
         const user: Vital = {
             id: lastId + 1,
             userId,
-            heartRate,
-            bloodPressure,
-            temperature,
-            notes,
+            type,
+            value,
+            unit,
+            riskScore,
+            details,
             createdAt: new Date(Date.now())
         };
 

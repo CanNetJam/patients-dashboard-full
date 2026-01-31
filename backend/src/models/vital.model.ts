@@ -1,9 +1,10 @@
 export interface Vital {
     id: number;
     userId: number;
-    heartRate: number;
-    bloodPressure: number;
-    temperature: number;
-    notes: string;
+    type: "Heart Rate" | "Respiratory Rate" | "BloodPressure - Diastolic" | "BloodPressure - Systolic" | "Temperature" | "Height" | "Weight" | "Note";
+    value: number;
+    unit: string;
+    riskScore: string;
+    details: string;
     createdAt: Date | string;
 }

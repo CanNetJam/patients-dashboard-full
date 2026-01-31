@@ -3,7 +3,7 @@ import { User } from "../models/user.model";
 
 export const UserService = {
     getAll(): User[] {
-        return users;
+        return users.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     },
 
     getById(id: number): User | undefined {
@@ -11,8 +11,8 @@ export const UserService = {
     },
 
     create(
-        firstName: string,
-        lastName: string,
+        name: string,
+        dateOfBirth: Date | string,
         age: number,
         sex: 'male' | 'female'
     ): User {
@@ -20,10 +20,11 @@ export const UserService = {
 
         const user: User = {
             id: lastId + 1,
-            firstName,
-            lastName,
+            name,
+            dateOfBirth,
             age,
             sex,
+            createdAt: new Date(Date.now())
         };
 
         users.push(user);
