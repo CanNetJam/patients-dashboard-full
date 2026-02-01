@@ -14,7 +14,7 @@ export default function LoginPage() {
             <div className="h-full w-full container mx-auto max-w-6xl flex flex-col justify-center items-center gap-10">
                 <h1 className="font-bold text-5xl text-center text-slate-800">Medical Case Management Mini-App</h1>
 
-                <div className="max-w-125 grid gap-1 justify-center">
+                <div className="min-w-96 max-w-125 grid gap-2 justify-center">
                     <h3 className="font-medium text-lg text-gray-500">Please enter your name to proceed.</h3>
                     <div className="flex gap-2">
                         <Input

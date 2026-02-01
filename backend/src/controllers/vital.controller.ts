@@ -26,17 +26,17 @@ export const VitalController = {
     createVital(req: Request, res: Response, next: NextFunction) {
         const {
             userId,
-            heartRate,
-            bloodPressure,
-            temperature,
-            notes
+            type,
+            value,
+            unit,
+            details,
         } = req.body;
 
-        if (!userId || !heartRate || !bloodPressure || !temperature) {
+        if (!userId || !type || !value || !unit) {
             return next(new HttpError(400, "Please fill out the neccessary fields."));
         }
 
-        const vital = VitalService.create(userId, heartRate, bloodPressure, temperature, notes);
+        const vital = VitalService.create(userId, type, value, unit, details);
         res.status(201).json(success(vital, 201));
     }
 }

@@ -15,7 +15,7 @@ export const VitalService = {
         type: "Heart Rate" | "Respiratory Rate" | "BloodPressure - Diastolic" | "BloodPressure - Systolic" | "Temperature" | "Height" | "Weight" | "Note",
         value: number,
         unit: string,
-        riskScore: string,
+        //riskScore: string,
         details: string,
     ): Vital {
         let lastId = vitals.length > 0 ? vitals[vitals.length - 1].id : 0;
@@ -26,7 +26,7 @@ export const VitalService = {
             type,
             value,
             unit,
-            riskScore,
+            //riskScore,
             details,
             createdAt: new Date(Date.now())
         };

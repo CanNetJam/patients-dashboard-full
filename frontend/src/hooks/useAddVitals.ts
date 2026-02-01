@@ -3,6 +3,7 @@ import type { VitalFormEntry } from "../types/Vital";
 import { vitalService } from "../services/vitalService";
 
 export const useAddVitals = () => {
+    const [isAddingVitals, setIsAddingVitals] = useState(false);
     const [vitalData, setVitalData] = useState<VitalFormEntry>({
         userId: undefined,
         type: undefined,
@@ -10,7 +11,7 @@ export const useAddVitals = () => {
         unit: '',
         details: '',
     });
-    const [isLoading, setIsLoading] = useState(false);
+    const [isVitalLoading, setIsVitalLoading] = useState(false);
 
     const handleChange = (
         name: keyof VitalFormEntry,
@@ -25,7 +26,7 @@ export const useAddVitals = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setIsLoading(true);
+        setIsVitalLoading(true);
         try {
             const res = await vitalService.addVital(vitalData);
 
@@ -37,7 +38,7 @@ export const useAddVitals = () => {
                     value: undefined,
                     unit: '',
                     details: '',
-                })
+                });
             }
         } catch (err) {
             if (err instanceof Error) {
@@ -46,14 +47,17 @@ export const useAddVitals = () => {
                 alert("Something went wrong");
             }
         } finally {
-            setIsLoading(false);
+            setIsVitalLoading(false);
+            setIsAddingVitals(false);
         }
     };
 
     return {
+        isAddingVitals,
+        setIsAddingVitals,
         vitalData,
         handleChange,
         handleSubmit,
-        isLoading
+        isVitalLoading
     };
 }

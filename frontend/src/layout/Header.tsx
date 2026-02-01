@@ -4,7 +4,7 @@ export default function Header() {
     const { name } = userNameContext();
 
     return (
-        <div className="h-[6vh] w-full bg-white rounded-full flex items-center px-4 justify-between">
+        <div className="h-[8vh] w-full bg-white rounded-full flex items-center px-4 py-1 justify-between">
             <div className='h-10 w-auto'>
                 {/* <img className='h-full w-full object-scale-down' alt='Test logo' /> */}
                 <div className="h-10 w-10 rounded-full bg-gray-500"></div>

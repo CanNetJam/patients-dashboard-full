@@ -47,14 +47,25 @@ export const usePatientForm = () => {
             }
         } finally {
             setIsLoading(false);
-            navigate("/dashboard"); 
+            navigate("/dashboard");
         }
     };
+
+    const handleCancel = () => {
+        setPatientData({
+            name: '',
+            dateOfBirth: null,
+            age: undefined,
+            sex: undefined
+        })
+        navigate("/dashboard");
+    }
 
     return {
         patientData,
         handleChange,
         handleSubmit,
-        isLoading
+        isLoading,
+        handleCancel
     };
 }

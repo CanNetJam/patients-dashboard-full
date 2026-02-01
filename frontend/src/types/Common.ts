@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import type { FormEvent, ReactNode } from "react";
+import type { VitalFormEntry } from "./Vital";
 
 export interface ButtonProps {
     label: string;
@@ -23,4 +24,15 @@ export interface API<T> {
     success: boolean;
     status: number;
     data: T;
+}
+
+export interface ModalProps {
+    size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
+    openModal: boolean;
+    setOpenModal: (open: boolean) => void;
+    data: VitalFormEntry; // Since this is the only use case, but we can change this if future forms needed this too
+    onChangeHandler: (name: any, value: any) => void;
+    submitHandler: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+    isLoading: boolean;
+    availableType?: string[]; // Specific only to vital entry
 }

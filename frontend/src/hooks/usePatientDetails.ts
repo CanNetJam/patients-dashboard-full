@@ -4,12 +4,14 @@ import { getCache, setCache } from "../utils/localStorageCache";
 import { patientService } from "../services/patientService";
 import type { Patient } from "../types/Patient";
 import { vitalService } from "../services/vitalService";
+import { checkAvailableVitals } from "../utils/checkAvailableVitals";
 
 export const usePatientDetails = () => {
     const urlParams = useParams();
     const [patient, setPatient] = useState<Patient>();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [availableVitals, setAvailableVitals] = useState<string[]>([]);
 
     useEffect(() => {
         let isMounted = true;
@@ -19,7 +21,7 @@ export const usePatientDetails = () => {
                 if (!urlParams.patientId) return;
 
                 const CACHE_KEY = `patient-${urlParams.patientId}_cache`;
-                const CACHE_TTL = 1 * 60 * 1000; // 1 minute
+                const CACHE_TTL = 0.25 * 60 * 1000; // 15 seconds
 
                 setIsLoading(true);
 
@@ -82,9 +84,15 @@ export const usePatientDetails = () => {
         };
     }, []);
 
+    useEffect(()=> {
+        const remainingVitals = checkAvailableVitals(patient?.vitals);
+        setAvailableVitals(remainingVitals);
+    }, [patient?.vitals])
+
     return {
         patient,
         isLoading,
-        error
+        error,
+        availableVitals
     }
 }

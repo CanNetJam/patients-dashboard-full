@@ -8,7 +8,8 @@ export default function PatientEntry() {
         patientData,
         handleChange,
         handleSubmit,
-        isLoading
+        isLoading,
+        handleCancel
     } = usePatientForm();
 
     return (
@@ -98,6 +99,7 @@ export default function PatientEntry() {
                         color={"danger"}
                         isLoading={isLoading}
                         type={"button"}
+                        onPress={handleCancel}
                     />
                     <ButtonWithState
                         label={"Submit"}
