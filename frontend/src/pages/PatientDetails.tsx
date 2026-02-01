@@ -1,8 +1,11 @@
+import moment from "moment";
 import AddVitalModal from "../components/AddVitalModal";
 import { useAddVitals } from "../hooks/useAddVitals";
 import { usePatientDetails } from "../hooks/usePatientDetails";
 import type { Vital } from "../types/Vital";
 import { getVitalColor } from "../utils/vitalColor";
+import { Button } from "@heroui/react";
+import VitalImage from "../components/VitalImage";
 
 export default function PatientDetails() {
     const {
@@ -19,7 +22,7 @@ export default function PatientDetails() {
         handleSubmit,
         isVitalLoading
     } = useAddVitals();
-   
+
     if (error) return <div>Found an error: {error}</div>
 
     if (isLoading) return <div>Loading...</div>
@@ -37,45 +40,58 @@ export default function PatientDetails() {
                 availableType={availableVitals}
             />
 
-            <div className="h-auto container max-w-6xl bg-white rounded-xl overflow-hidden p-8">
-                Patient Details
+            <div className="h-auto container max-w-6xl bg-white rounded-xl overflow-hidden grid gap-2 p-4 sm:p-8">
+                <div className="flex gap-4 justify-between items-start">
+                    <label className="text-2xl font-bold">Patient Details</label>
 
-                <div>
-                    {patient?.name}
-                    {patient?.age}
-                    {patient?.sex}
-                </div>
-
-                <div className="grid sm:grid-cols-3 gap-4">
-                    {patient?.vitals?.map((vital: Vital) => {
-                        return (
-                            <div key={vital.id} className={`h-full w-full ${getVitalColor(vital.type)} rounded-xl p-6 flex flex-col justify-between`}>
-                                <div className="flex gap-1 xl:grid xl:gap-0">
-                                    {/* <div className="h-10 xl:h-14 w-10 xl:w-14">
-                                    <img className="h-full w-full object-cover" src={a.icon} alt={a.description} />
-                                </div> */}
-
-                                    <div className="grid">
-                                        <label className="font-medium text-sm">{vital.type}</label>
-                                        <span className="font-bold text-xl leading-5">{vital.value}</span>
-                                    </div>
-                                </div>
-
-                                <span className="text-sm">{vital.details}</span>
-                            </div>
-                        )
-                    })}
-
-                    <div
-                        onClick={() => {
+                    <Button
+                        onPress={() => {
                             handleChange("userId", Number(patient?.id))
                             setIsAddingVitals(true)
                         }}
-                        className="h-full w-full bg-blue-400 rounded-xl p-6"
+                        color="primary"
                     >
-                        <span className="text-white text-lg whitespace-nowrap">Add Vital Record</span>
+                        Add Vitals
+                    </Button>
+                </div>
+
+                <div className="h-32 w-full flex gap-4 items-center rounded-xl bg-linear-to-r from-blue-200 via-yellow-50 to-blue-200 p-2 sm:p-4 mb-4 sm:mb-6 shadow-md">
+                    <div className="h-14 w-14 sm:h-24 sm:w-24">
+                        <svg className="h-full w-full fill-current text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z" /></svg>
+                    </div>
+                    <div className="">
+                        <div className="text-lg font-bold text-slate-700">{patient?.name}</div>
+                        <div>{patient?.age} years old</div>
+                        <div className="capitalize">{patient?.sex}</div>
                     </div>
                 </div>
+
+                {/* <div className="gap-4 border-2 border-blue-300 p-4 sm:p-6 relative rounded-xl my-2 w-full">
+                    <p className="absolute -top-4 left-2 bg-white text-lg text-blue-400 font-semibold px-2">Vitals</p> */}
+
+                    <label className="text-xl text-gray-700 font-semibold">Vitals</label>
+                    <div className="grid sm:grid-cols-3 gap-2">
+                        {patient?.vitals?.map((vital: Vital) => {
+                            return (
+                                <div key={vital.id} className={`h-full w-full ${getVitalColor(vital.type)} rounded-xl p-4 sm:p-6 flex flex-col gap-2 sm:gap-4 justify-between`}>
+                                    <div className="flex gap-4 items-center">
+                                        <div className="h-16 w-16 bg-white rounded-full p-3 flex justify-center items-center">
+                                            <VitalImage type={vital.type} />
+                                        </div>
+
+                                        <div className="flex flex-col sm:gap-2">
+                                            <label className="font-medium text-sm sm:text-base">{vital.type}</label>
+                                            <span className="font-bold text-2xl sm:text-3xl leading-5">{vital.value}</span>
+                                            <span className="text-sm">{vital.riskScore !== "Not applicable" ? vital.riskScore : ""}</span>
+                                        </div>
+                                    </div>
+
+                                    <span className="text-sm text-gray-600">Recorded at {moment(vital.createdAt).format('YYYY-MM-DD')} | {moment(vital.createdAt).fromNow()}</span>
+                                </div>
+                            )
+                        })}
+                    </div>
+                {/* </div> */}
             </div>
         </>
     )

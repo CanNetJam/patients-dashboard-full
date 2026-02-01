@@ -1,5 +1,7 @@
+import { users } from "../data/user.store";
 import { vitals } from "../data/vital.store";
 import { Vital } from "../models/vital.model";
+import { RiskAssessmentService } from "./risk-assessment.service";
 
 export const VitalService = {
     getAll(): Vital[] {
@@ -7,7 +9,9 @@ export const VitalService = {
     },
 
     getById(id: number): Vital[] {
-        return vitals.filter(u => u.userId === id);
+        return vitals
+            .filter(u => u.userId === id)
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     },
 
     create(
@@ -15,10 +19,15 @@ export const VitalService = {
         type: "Heart Rate" | "Respiratory Rate" | "BloodPressure - Diastolic" | "BloodPressure - Systolic" | "Temperature" | "Height" | "Weight" | "Note",
         value: number,
         unit: string,
-        //riskScore: string,
         details: string,
     ): Vital {
         let lastId = vitals.length > 0 ? vitals[vitals.length - 1].id : 0;
+        const patient = users.find(u => u.id === userId);
+
+        if (!patient) throw new Error("Patient not found");
+
+        const riskAssessment = RiskAssessmentService.computeRisk(patient.age, type, value);
+        const riskScore = riskAssessment.level;
 
         const user: Vital = {
             id: lastId + 1,
@@ -26,7 +35,7 @@ export const VitalService = {
             type,
             value,
             unit,
-            //riskScore,
+            riskScore,
             details,
             createdAt: new Date(Date.now())
         };

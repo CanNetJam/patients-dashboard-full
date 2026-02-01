@@ -10,7 +10,7 @@ export const checkAvailableVitals = (vitals: Vital[] | undefined): string[] => {
         "Temperature",
         "Height",
         "Weight",
-        "Note",
+        "Note"
     ];
 
     if (vitals === undefined) return allVitals;

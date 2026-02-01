@@ -13,7 +13,7 @@ export default function PatientEntry() {
     } = usePatientForm();
 
     return (
-        <div className="h-auto container max-w-6xl bg-white rounded-xl overflow-hidden p-8">
+        <div className="h-auto container max-w-6xl bg-white rounded-xl overflow-hidden p-4 sm:p-8">
             <Form
                 onSubmit={handleSubmit}
                 className="h-full w-full"
