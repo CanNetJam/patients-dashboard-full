@@ -11,8 +11,8 @@ Follow these steps to set up the project and run it locally.
 ### 1. Clone the Repository
 
 ```bash
-git clone <YOUR_REPO_URL>
-cd <YOUR_REPO_DIRECTORY>
+git clone https://github.com/CanNetJam/patients-dashboard-full.git
+cd patients-dashboard-full
 ```
 
 ### 2. Install Backend Dependencies
@@ -33,8 +33,7 @@ npm install
 
 ### 4. Set Up Environment Variables
 - Frontend: VITE_BACKEND_API_BASE_URL=http://localhost:3001/api
-- Backend: PORT=3001
-           FRONTEND_URL=http://localhost:5173
+- Backend: PORT=3001, FRONTEND_URL=http://localhost:5173
 
 ### 5. Run Backend
 
@@ -91,7 +90,7 @@ npm run dev
 
 ---
 
-### Vital Endpoints
+### Vital Assessment Endpoint
 
 - **GET** `/api/vitals`
 
@@ -151,6 +150,13 @@ npm run dev
 
 ## Future Improvements
 
+### Frontend
+
+- Image upload for patient
+- Alerts/Toasts
+- Patient Search
+- Light/Dark theme saved in context
+
 ### Database & Persistence
 
 - Move database credentials to environment variables
@@ -176,6 +182,7 @@ npm run dev
 
 ### Testing & CI/CD
 
+- Docker implementation
 - Add integration and E2E tests
 - Set up automated testing via CI pipeline
 
