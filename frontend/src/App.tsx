@@ -5,6 +5,7 @@ import PatientList from "./pages/PatientList";
 import PatientEntry from "./pages/PatientEntry";
 import PatientDetails from "./pages/PatientDetails";
 import { UserContextProvider } from "./context/userContext";
+import { ProtectedRoute } from "./context/ProtectedRoute";
 
 function App() {
     return (
@@ -13,10 +14,34 @@ function App() {
                 <Routes>
                     <Route path="/" element={<LoginPage />} />
 
-                    <Route path="dashboard" element={<DefaultTemplate />}>
-                        <Route index element={<PatientList />} />
-                        <Route path="add-new-patient" element={<PatientEntry />} />
-                        <Route path=":patientId" element={<PatientDetails />} />
+                    <Route
+                        path="dashboard"
+                        element={<DefaultTemplate />}
+                    >
+                        <Route
+                            index
+                            element={
+                                <ProtectedRoute>
+                                    <PatientList />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="add-new-patient"
+                            element={
+                                <ProtectedRoute>
+                                    <PatientEntry />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path=":patientId"
+                            element={
+                                <ProtectedRoute>
+                                    <PatientDetails />
+                                </ProtectedRoute>
+                            }
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>

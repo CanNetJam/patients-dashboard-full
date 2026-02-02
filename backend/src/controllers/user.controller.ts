@@ -26,10 +26,12 @@ export const UserController = {
     createUser(req: Request, res: Response, next: NextFunction) {
         const { name, dateOfBirth, age, sex } = req.body;
 
-        if (!name || !dateOfBirth || !age || !age) {
-            return next(new HttpError(400, "Plase fill out the neccessary fieldsre"));
+        // Note: age can be 0, so we need to check differently
+        if (!name || !dateOfBirth || age === undefined || age === null || !sex) {
+            return next(new HttpError(400, "Please fill out the neccessary fields"));
         }
 
+        // Validate age is not negative (0 is allowed for newborns)
         if (age < 0) {
             return next(new HttpError(400, "Age should be a positive number"));
         }

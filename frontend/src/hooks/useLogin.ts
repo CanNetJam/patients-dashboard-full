@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { userNameContext } from "./userNameContext";
-import { useNavigate  } from "react-router";
+import { useNavigate } from "react-router";
 
 export const useLogin = () => {
     const navigate = useNavigate();
@@ -10,11 +10,16 @@ export const useLogin = () => {
     const submitHandler = () => {
         const cleanName: string = userName.trim();
 
-        if (cleanName === '') alert('Please enter your name');
+        if (cleanName === '') {
+            alert('Please enter your name');
+            return;
+        }
+
+        localStorage.setItem("UserName", cleanName);
 
         setName(cleanName);
         setUserName('');
-        navigate("/dashboard");        
+        navigate("/dashboard");
     }
 
     return {

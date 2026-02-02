@@ -36,23 +36,23 @@ export const RiskAssessmentService = {
         // Different vitals have their own range
         if (type === "Heart Rate") {
             if (rate < 40 || rate > 120) baseScore = 2;
-            else if (rate < 60 || rate > 100) baseScore = 1;
+            else if (rate >= 40 && rate < 60 || rate > 100 && rate <= 120) baseScore = 1;
         }
         if (type === "BloodPressure - Diastolic") {
-            if (rate < 90) baseScore = 2;
-            else if (rate < 85) baseScore = 1;
+            if (rate < 85) baseScore = 2;
+            else if (rate >= 85 && rate < 90) baseScore = 1;
         }
         if (type === "BloodPressure - Systolic") {
-            if (rate < 130) baseScore = 2;
-            else if (rate < 125) baseScore = 1;
+            if (rate < 125) baseScore = 2;
+            else if (rate >= 125 && rate < 130) baseScore = 1;
         }
         if (type === "Respiratory Rate") {
             if (rate < 10 || rate > 22) baseScore = 2;
-            else if (rate < 12 || rate > 20) baseScore = 1;
+            else if (rate >= 10 && rate < 12 || rate > 20 && rate <= 22) baseScore = 1;
         }
         if (type === "Temperature") {
             if (rate < 35 || rate > 38.8) baseScore = 2;
-            else if (rate < 36.5 || rate > 37.3) baseScore = 1;
+            else if (rate >= 35 && rate < 36.5 || rate > 37.3 && rate <= 38.8) baseScore = 1;
         }
 
         const finalScore = baseScore + ageModifier;

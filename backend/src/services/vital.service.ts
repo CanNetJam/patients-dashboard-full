@@ -10,7 +10,7 @@ export const VitalService = {
 
     getById(id: number): Vital[] {
         return vitals
-            .filter(u => u.userId === id)
+            .filter(v => v.userId === id)
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     },
 
@@ -19,7 +19,7 @@ export const VitalService = {
         type: "Heart Rate" | "Respiratory Rate" | "BloodPressure - Diastolic" | "BloodPressure - Systolic" | "Temperature" | "Height" | "Weight" | "Note",
         value: number,
         unit: string,
-        details: string,
+        details?: string, // Make details optional
     ): Vital {
         let lastId = vitals.length > 0 ? vitals[vitals.length - 1].id : 0;
         const patient = users.find(u => u.id === userId);
@@ -29,18 +29,18 @@ export const VitalService = {
         const riskAssessment = RiskAssessmentService.computeRisk(patient.age, type, value);
         const riskScore = riskAssessment.level;
 
-        const user: Vital = {
+        const vital: Vital = {
             id: lastId + 1,
             userId,
             type,
             value,
             unit,
             riskScore,
-            details,
+            details: details || "", // Provide default empty string if details not provided
             createdAt: new Date(Date.now())
         };
 
-        vitals.push(user);
-        return user;
+        vitals.push(vital);
+        return vital;
     }
 }

@@ -2,7 +2,10 @@ import { useState, type FormEvent } from "react";
 import type { VitalFormEntry } from "../types/Vital";
 import { vitalService } from "../services/vitalService";
 
-export const useAddVitals = () => {
+export const useAddVitals = (
+    refresh: boolean,
+    setRefresh: React.Dispatch<React.SetStateAction<boolean>>
+) => {
     const [isAddingVitals, setIsAddingVitals] = useState(false);
     const [vitalData, setVitalData] = useState<VitalFormEntry>({
         userId: undefined,
@@ -49,6 +52,7 @@ export const useAddVitals = () => {
         } finally {
             setIsVitalLoading(false);
             setIsAddingVitals(false);
+            setRefresh(!refresh);
         }
     };
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getCache, setCache } from "../utils/localStorageCache";
 import { patientService } from "../services/patientService";
 import type { Patient } from "../types/Patient";
 import { vitalService } from "../services/vitalService";
@@ -9,9 +8,11 @@ import { checkAvailableVitals } from "../utils/checkAvailableVitals";
 export const usePatientDetails = () => {
     const urlParams = useParams();
     const [patient, setPatient] = useState<Patient>();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [availableVitals, setAvailableVitals] = useState<string[]>([]);
+    // We opted on the refresh approach instead of updating the state because we need the risk level computation on the backend api
+    const [refresh, setRefresh] = useState<boolean>(true); 
 
     useEffect(() => {
         let isMounted = true;
@@ -20,21 +21,7 @@ export const usePatientDetails = () => {
             try {
                 if (!urlParams.patientId) return;
 
-                const CACHE_KEY = `patient-${urlParams.patientId}_cache`;
-                const CACHE_TTL = 0.25 * 60 * 1000; // 15 seconds
-
                 setIsLoading(true);
-
-                // Try cache first
-                const cachedPatient = getCache<Patient>(CACHE_KEY);
-                if (cachedPatient) {
-                    if (isMounted) {
-                        setPatient(cachedPatient);
-                        setIsLoading(false);
-                    }
-                    return;
-                }
-
                 let fullPatientData: Patient = {
                     id: 0,
                     name: '',
@@ -64,7 +51,6 @@ export const usePatientDetails = () => {
 
                 if (isMounted) {
                     setPatient(fullPatientData);
-                    setCache(CACHE_KEY, fullPatientData, CACHE_TTL);
                 }
             } catch (err) {
                 if (isMounted) {
@@ -82,9 +68,9 @@ export const usePatientDetails = () => {
         return () => {
             isMounted = false;
         };
-    }, []);
+    }, [refresh]);
 
-    useEffect(()=> {
+    useEffect(() => {
         const remainingVitals = checkAvailableVitals(patient?.vitals);
         setAvailableVitals(remainingVitals);
     }, [patient?.vitals])
@@ -93,6 +79,8 @@ export const usePatientDetails = () => {
         patient,
         isLoading,
         error,
-        availableVitals
+        availableVitals,
+        refresh,
+        setRefresh
     }
 }
