@@ -31,7 +31,15 @@ export const useAddVitals = (
 
         setIsVitalLoading(true);
         try {
-            const res = await vitalService.addVital(vitalData);
+            const cleanVitalData = {
+                userId: vitalData.userId,
+                type: vitalData.type,
+                value: vitalData.value !== undefined ? Number(vitalData.value) : 0,
+                unit: vitalData.unit,
+                details: vitalData.details,
+            }
+
+            const res = await vitalService.addVital(cleanVitalData);
 
             if (!res.id) alert('Something went wrong')
             else {

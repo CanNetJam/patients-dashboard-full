@@ -51,17 +51,19 @@ export default function PatientDetails() {
             <div className="h-auto min-h-[90vh] sm:max-h-[50vh] container max-w-6xl bg-white rounded-xl overflow-hidden flex flex-col gap-2 p-4 sm:p-8">
                 <div className="flex gap-4 justify-between items-start">
                     <label className="text-xl sm:text-2xl font-bold">Patient Details</label>
-
-                    <Button
-                        onPress={() => {
-                            handleChange("userId", Number(patient?.id))
-                            setIsAddingVitals(true)
-                        }}
-                        color="primary"
-                        size={"md"}
-                    >
-                        Add Vitals
-                    </Button>
+                    
+                    {availableVitals.length > 0 && (
+                        <Button
+                            onPress={() => {
+                                handleChange("userId", Number(patient?.id))
+                                setIsAddingVitals(true)
+                            }}
+                            color="primary"
+                            size={"md"}
+                        >
+                            Add Vitals
+                        </Button>
+                    )}
                 </div>
 
                 <div className="h-32 w-full flex gap-4 items-center rounded-xl bg-linear-to-r from-blue-200 via-yellow-50 to-blue-200 p-2 sm:p-4 mb-4 sm:mb-6 shadow-md">
@@ -89,8 +91,16 @@ export default function PatientDetails() {
 
                                         <div className="flex flex-col sm:gap-1">
                                             <label className="font-medium text-sm sm:text-base text-gray-700">{vital.type}</label>
-                                            <p className="font-bold text-2xl sm:text-3xl leading-5 text-slate-800 my-1">{vital.value}<span className="ml-2 text-xs">{vital.unit}</span></p>
-                                            <span className="text-sm italic">{vital.riskScore !== "Not applicable" ? vital.riskScore : ""}</span>
+                                            {vital.type == "Note" ?
+                                                <>
+                                                    <span className="text-sm">{vital.details}</span>
+                                                </>
+                                                :
+                                                <>
+                                                    <p className="font-bold text-2xl sm:text-3xl leading-5 text-slate-800 my-1">{vital.value}<span className="ml-2 text-xs">{vital.unit}</span></p>
+                                                    <span className="text-sm italic">{vital.riskScore !== "Not applicable" ? vital.riskScore : ""}</span>
+                                                </>
+                                            }
                                         </div>
                                     </div>
 

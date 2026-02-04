@@ -41,8 +41,15 @@ export const VitalController = {
             details,
         } = req.body;
 
+        console.log(
+            userId,
+            type,
+            value,
+            unit,
+            details
+        )
         // Note: value can be 0, so we need to check differently
-        if (!userId || !type || value === undefined || value === null || !unit) {
+        if (!userId || !type || value === undefined || value === null) {
             return next(new HttpError(400, "Please fill out the neccessary fields."));
         }
 

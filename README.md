@@ -152,6 +152,8 @@ npm run dev
 
 ### Frontend
 
+- React Query/TanStack
+- Redux/Zustand instead of React Context
 - Image upload for patient
 - Alerts/Toasts
 - Patient Search
